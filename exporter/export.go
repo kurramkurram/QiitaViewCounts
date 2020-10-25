@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-func ToCsv(userInfos []data.UserInfo) {
+func ToCsv(pageInfos []data.PageInfo) {
 	file, err := os.OpenFile("result.csv", os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		log.Println("can not create csv file")
@@ -18,10 +18,10 @@ func ToCsv(userInfos []data.UserInfo) {
 
 	writer := csv.NewWriter(file)
 	writer.Write([]string{"title", "like_count", "page_views_count"})
-	for _, user := range userInfos {
-		likesCount := strconv.Itoa(user.Likes_count)
-		pageViewsCount := strconv.Itoa(user.Page_views_count)
-		writer.Write([]string{user.Title, likesCount, pageViewsCount})
+	for _, page := range pageInfos {
+		likesCount := strconv.Itoa(page.Likes_count)
+		pageViewsCount := strconv.Itoa(page.Page_views_count)
+		writer.Write([]string{page.Title, likesCount, pageViewsCount})
 	}
 	writer.Flush()
 }

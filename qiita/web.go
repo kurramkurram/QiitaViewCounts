@@ -13,7 +13,7 @@ import (
 var token = ""
 
 func GetQiitaViews() {
-	url := "https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20"
+	url := "https://qiita.com/api/v2/authenticated_user/items?page=2&per_page=20"
 	resp, err := doHttpRequest(url)
 	defer resp.Body.Close()
 
@@ -28,15 +28,15 @@ func GetQiitaViews() {
 		return
 	}
 
-	var userInfos []data.UserInfo
-	if err = json.Unmarshal(body, &userInfos); err != nil {
+	var pageInfos []data.PageInfo
+	if err = json.Unmarshal(body, &pageInfos); err != nil {
 		log.Println("can not unmarshal json user info")
 		return
 	}
 
 	index := 0
-	for _, user := range userInfos {
-		url = "https://qiita.com/api/v2/items/" + user.Id
+	for _, page := range pageInfos {
+		url = "https://qiita.com/api/v2/items/" + page.Id
 		resp, err := doHttpRequest(url)
 		defer resp.Body.Close()
 
@@ -51,15 +51,15 @@ func GetQiitaViews() {
 			return
 		}
 
-		if err := json.Unmarshal(body, &user); err != nil {
+		if err := json.Unmarshal(body, &page); err != nil {
 			log.Println("can not unmarshal json page info")
 			return
 		}
-		userInfos[index].Page_views_count = user.Page_views_count
+		pageInfos[index].Page_views_count = page.Page_views_count
 		index += 1
-		fmt.Println(user.Title, user.Page_views_count, user.Likes_count)
+		fmt.Println(page.Title, page.Page_views_count, page.Likes_count)
 	}
-	exporter.ToCsv(userInfos)
+	exporter.ToCsv(pageInfos)
 }
 
 func doHttpRequest(url string) (*http.Response, error) {

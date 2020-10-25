@@ -1,6 +1,6 @@
 package data
 
-type UserInfo struct {
+type PageInfo struct {
 	Id               string `json:"id"`
 	Likes_count      int    `json:"likes_count"`
 	Title            string `json:"title"`
