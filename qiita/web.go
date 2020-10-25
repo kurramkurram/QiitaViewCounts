@@ -10,6 +10,8 @@ import (
 	"net/http"
 )
 
+var token = ""
+
 func GetQiitaViews() {
 	url := "https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20"
 	resp, err := doHttpRequest(url)
@@ -67,8 +69,16 @@ func doHttpRequest(url string) (*http.Response, error) {
 		return nil, err
 	}
 
+	if token == "" {
+		buf, err := ioutil.ReadFile("token.txt")
+		if err != nil {
+			log.Println("can not file open")
+		}
+		token = string(buf)
+	}
+
 	req.Header.Set("content-type", "application/json")
-	req.Header.Set("Authorization", "Bearer ")
+	req.Header.Set("Authorization", "Bearer " + token)
 
 	client := new(http.Client)
 	resp, err := client.Do(req)
