@@ -13,7 +13,7 @@ import (
 var token = ""
 
 func GetQiitaViews() {
-	url := "https://qiita.com/api/v2/authenticated_user/items?page=2&per_page=20"
+	url := "https://qiita.com/api/v2/authenticated_user/items?page=1&per_page=20"
 	resp, err := doHttpRequest(url)
 	defer resp.Body.Close()
 
