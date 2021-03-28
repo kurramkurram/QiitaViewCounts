@@ -5,11 +5,15 @@ import (
 	"encoding/csv"
 	"log"
 	"os"
+	"time"
 	"strconv"
 )
 
 func ToCsv(pageInfos []data.PageInfo) {
-	file, err := os.OpenFile("result.csv", os.O_WRONLY|os.O_CREATE, 0600)
+	unix := time.Now().Unix()
+	file_name := "result_" + strconv.FormatInt(unix, 10) + ".csv"
+
+	file, err := os.OpenFile(file_name, os.O_WRONLY|os.O_CREATE, 0600)
 	if err != nil {
 		log.Println("can not create csv file")
 		return
